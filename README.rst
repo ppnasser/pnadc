@@ -59,7 +59,8 @@ Overview
 
 .. end-badges
 
-A python package to deal with IBGE-PNADc database.
+This is an unofficial and simple python package to deal with IBGE-PNADc database. Aims to help you with quick functions to work with the `Pesquisa Nacional por Amostra de Domicílios Contínua <https://www.ibge.gov.br/estatisticas/sociais/trabalho/9171-pesquisa-nacional-por-amostra-de-domicilios-continua-mensal.html?=&t=o-que-e>`_
+
 
 * Free software: GNU Lesser General Public License v3 or later (LGPLv3+)
 

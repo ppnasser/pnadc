@@ -16,7 +16,7 @@ def unzip(file_name, keep_zipfile=True):
     print("Unzip complete")
     if not keep_zipfile:
         os.remove(file_name)
-        return file_name[:-3]+"txt"
+    return file_name[:-3]+"txt"
 
 
 class extract:
