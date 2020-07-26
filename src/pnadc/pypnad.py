@@ -61,44 +61,44 @@ class pyPNAD:
         variable, rest = rest.strip().split(' ', 1)
         size, rest = rest.strip().split(' ', 1)
         comment = rest.replace('/*', '').replace('*/', '').strip()
-    
+
         # Convert
         position = int(position.replace('@', ''))
         variable = variable.strip()
         size = int(float(size.replace('$', '')))
-    
+
         return {
             'name': variable,
             'position': position,
             'size': size,
             'comment': comment,
         }
-        
+
     def get_vars(varsfile):
         """return a colection of names, positions, sizes, and labels"""
         variables = []
         for line in varsfile:
-            if line[0] is '@':
+            if line[0] == '@':
                 variable = pyPNAD.get_var(line)
                 variables.append(variable)
             else:
                 pass
         return variables
-    
+
     def col_widths(vars_file):
         """Parse through all variables in PNAD"""
-        
+
         vars_fp = io.open(vars_file)
         variables = pyPNAD.get_vars(vars_fp)
-        
+
         columns = [var['name'] for var in variables]
         widths = [var['size'] for var in variables]
-       
+
         return columns, widths, variables
-    
+
     def load(data_file, input_file, **kwargs):
-        """Loads all input and source files, returns a pandas DataFrame""" 
-        print('Building',data_file)
+        """Loads all input and source files, returns a pandas DataFrame"""
+        print('Building', data_file)
         columns, widths, var = pyPNAD.col_widths(input_file)
         return pyPNAD._build(data_file, widths=widths, names=columns, **kwargs)
 
@@ -107,7 +107,7 @@ class pyPNAD:
         to_concat = []
         for chunk in pd.read_fwf(data_file, widths=widths, header=None,
                                  names=names, chunksize=2e4):
-            if keep_columns and isinstance(keep_columns,list):
+            if keep_columns and isinstance(keep_columns, list):
                 to_concat.append(chunk[keep_columns])
             else:
                 to_concat.append(chunk)

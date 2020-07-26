@@ -17,6 +17,7 @@ Why does this file exist, and why not put this in __main__?
 import sys
 from .pnadc import get
 
+
 def main(argv=sys.argv):
     """
     Args:
@@ -27,5 +28,5 @@ def main(argv=sys.argv):
 
     Does stuff.
     """
-    get(argv[1],argv[2],path=argv[3],sy=True)
+    get(argv[1], argv[2], path=argv[3], sy=True)
     return 0
