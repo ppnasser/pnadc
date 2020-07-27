@@ -28,5 +28,7 @@ def main(argv=sys.argv):
 
     Does stuff.
     """
+
     get(argv[1], argv[2], path=argv[3], sy=True)
+
     return 0
