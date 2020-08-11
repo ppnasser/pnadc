@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 from pnadc.cli import main
 import pnadc
