@@ -113,9 +113,12 @@ class pyPNAD:
                 to_concat.append(chunk)
         if del_file:
             os.remove(data_file)
-        print('Done!')
-        return pd.concat(to_concat)
 
+        data = pd.concat(to_concat)
+        data[data.columns] = data[data.columns].apply(pd.to_numeric,
+                                                      errors='coerce', axis=1)
+        print('Done!')
+        return data
     def __init__(self):
         self.release = 'July 2020'
         self.version = '3.0'
