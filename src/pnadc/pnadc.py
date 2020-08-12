@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from .pypnad import pd, os, pyPNAD
+import re
 import urllib.request
 import zipfile
-import re
+
+from .pypnad import os
+from .pypnad import pd
+from .pypnad import pyPNAD
+
 # from .tools import *
 
 __all__ = ['unzip', 'extract', 'build', 'query', 'get', 'get_all', 'save']

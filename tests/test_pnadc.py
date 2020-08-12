@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from pnadc.cli import main
-import pnadc
+import os
+import re
+
 import pandas as pd
 import pytest
-import re
-import os
+
+import pnadc
+from pnadc.cli import main
 
 PATH = os.path.dirname(os.path.abspath(__file__)) + '/'
 
@@ -35,5 +37,6 @@ def test_api_ftp():
 
 def test_mock_get(mocker, df):
     mocker.patch('pnadc.extract.data', return_value=PATH + "PNADC_TEST.txt")
-    data = pnadc.get(1, 2020, path=PATH, del_file=False, keep_columns=['Ano'])
+    data = pnadc.get(1, 2020, path=PATH, del_file=False, keep_columns=['Ano'],
+                     get_docs=False)
     assert list(df['Ano'].values) == list(data.values)

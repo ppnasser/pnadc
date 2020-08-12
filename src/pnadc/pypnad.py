@@ -44,8 +44,9 @@ pyPNAD.load(data_file, input_file)
 """
 
 import io
-import pandas as pd
 import os
+
+import pandas as pd
 
 
 class pyPNAD:
