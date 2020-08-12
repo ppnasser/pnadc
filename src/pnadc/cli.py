@@ -28,7 +28,9 @@ def main(argv=sys.argv):
 
     Does stuff.
     """
-    if len(argv)>1:
-        get(argv[1], argv[2], path=argv[3], sy=True)
-
-    return 0
+    try:
+        get(argv[1], argv[2], path=argv[3], save_only=True)
+    except ValueError:
+        print("Invalid args")
+    finally:
+        return 0

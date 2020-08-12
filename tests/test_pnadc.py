@@ -7,12 +7,11 @@ import pytest
 import re
 import os
 
-PATH = os.path.dirname(os.path.abspath(__file__))+'/'
+PATH = os.path.dirname(os.path.abspath(__file__)) + '/'
 
 @pytest.fixture(scope="module")
 def df():
-    df = pd.read_csv(PATH+"PNADC_TEST.csv")
-    df = df.to_string(float_format="%.0f")
+    df = pd.read_csv(PATH + "PNADC_TEST.csv")
     return df
 
 def test_main():
@@ -20,20 +19,21 @@ def test_main():
 
 
 def test_build(df):
-    DF = pnadc.build(PATH+"PNADC_TEST.txt", 
-                     input_file=PATH+'input_PNADC_trimestral.txt',
-                     del_file=False)
-    DF = DF.to_string(float_format="%.0f")
-    assert DF == df
+    data = pnadc.build(PATH + "PNADC_TEST.txt",
+                       input_file=PATH + 'input_PNADC_trimestral.txt',
+                       del_file=False)
+    data = data.to_string(float_format="%.0f")
+    DF = df.to_string(float_format="%.0f")
+    assert DF == data
 
 
 def test_api_ftp():
     text = pnadc.extract._url_response(pnadc.extract._URL_PNADC)
     search = re.findall('Documentacao', text)
-    if not search:
-        assert False
-    else:
-        assert True
+    assert search != []
 
-if __name__=='__main__':
-    print(os.path.dirname(os.path.abspath(__file__)))
+
+def test_mock_get(mocker, df):
+    mocker.patch('pnadc.extract.data', return_value=PATH + "PNADC_TEST.txt")
+    data = pnadc.get(1, 2020, path=PATH, del_file=False, keep_columns=['Ano'])
+    assert list(df['Ano'].values) == list(data.values)

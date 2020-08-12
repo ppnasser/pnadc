@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from .pypnad import *
-from .tools import *
+from .pypnad import pd, os, pyPNAD
+import urllib.request
+import zipfile
+import re
+# from .tools import *
 
-__all__ = ['unzip', 'extract', 'build', 'query', 'get', 'get_all']
+__all__ = ['unzip', 'extract', 'build', 'query', 'get', 'get_all', 'save']
 
 def unzip(file_name, exdirpath='', keep_zipfile=True):
     """
@@ -27,7 +30,7 @@ def unzip(file_name, exdirpath='', keep_zipfile=True):
     print("Unzip complete")
     if not keep_zipfile:
         os.remove(file_name)
-    return file_name[:-3]+"txt"
+    return file_name[:-3] + "txt"
 
 
 class extract:
@@ -37,21 +40,23 @@ class extract:
     def _url_response(url):
         return str(urllib.request.urlopen(url).read().decode('utf-8'))
 
-    def _downloader(search, query_url, path,unzip_file, **kwargs):
+    def _downloader(search, query_url, path, unzip_file, **kwargs):
         print("Downloading", search, "this can take some time.")
         urllib.request.urlretrieve(query_url, path + search)
         print(search, "download is complete!")
         if unzip_file and search[-3:] == "zip":
-            return unzip(path+search, exdirpath=path, **kwargs)
+            return unzip(path + search, exdirpath=path, **kwargs)
 
     def data(quarter, year, path='', unzip_file=True, **kwargs):
 
         try:
             quarter = int(quarter)
-            text = _url_response(extract._URL_PNADC + str(year))
-            search = re.findall('PNADC_0+'+str(quarter)+str(year)+'.*\.zip', text)
+            url = extract._URL_PNADC + str(year)
+            text = extract._url_response(url)
+            search = re.findall('PNADC_0+' + str(quarter) + str(year) + '.*\.zip',
+                                text)
             if not search:
-                print("Query 0"+str(quarter)+str(year)+" not found.")
+                print("Query 0" + str(quarter) + str(year) + " not found.")
                 raise Exception
             else:
                 query_url = url + '/' + search[0]
@@ -62,7 +67,7 @@ class extract:
             return
 
     def query_docs():
-        text = _url_response(extract._URL_DOCS)
+        text = extract._url_response(extract._URL_DOCS)
         pattern = '([A-z_0-9-]+\.xls|[A-z_0-9-]+\.zip|[A-z_0-9-]+\.pdf|[A-z_0-9-]+\.xlsx)'
         return re.findall(pattern=pattern, string=text)
 
@@ -87,7 +92,7 @@ class extract:
     def _extract_docs(search, path, select_files, unzip_file, **kwargs):
         for i in search:
             if i in select_files:
-                query_url = _URL_DOCS + i
+                query_url = extract._URL_DOCS + i
                 extract._downloader(search=i, query_url=query_url, path=path,
                                     unzip_file=unzip_file, **kwargs)
 
@@ -139,7 +144,7 @@ def query(q, input_file='input_PNADC_trimestral.txt'):
     return next((item for item in var if item["column"] == q), None)
 
 
-def get(quarter, year, path='', get_docs=True, keep_columns=[], select_files=['Dicionario_e_input.zip'], sy=False, **kwargs):
+def get(quarter, year, path='', get_docs=True, keep_columns=[], select_files=['Dicionario_e_input.zip'], save_only=False, del_file=True, **kwargs):
     """Download the desired survey database year range and save them as csv.
 
     Parameters
@@ -172,11 +177,12 @@ def get(quarter, year, path='', get_docs=True, keep_columns=[], select_files=['D
     if get_docs:
         extract.docs(path=path, select_files=select_files, **kwargs)
     data_file = extract.data(quarter=quarter, year=year, path=path, **kwargs)
-    data = build(data_file, path+'input_PNADC_trimestral.txt', keep_columns=keep_columns)
-    if not sy:
+    data = build(data_file, path + 'input_PNADC_trimestral.txt',
+                 keep_columns=keep_columns, del_file=del_file)
+    if not save_only:
         return data
-    if sy:
-        save(data, path+'PNADC_0'+str(quarter)+str(year))
+    else:
+        save(data, path + 'PNADC_0' + str(quarter) + str(year))
 
 
 def get_all(range_years, path='', get_docs=True, keep_columns=[], select_files=['Dicionario_e_input.zip'], **kwargs):
@@ -216,8 +222,9 @@ def get_all(range_years, path='', get_docs=True, keep_columns=[], select_files=[
             if data_file is None:
                 break
             else:
-                data = build(data_file, path+'input_PNADC_trimestral.txt', keep_columns=keep_columns)
-                save(data, path+'PNADC_0'+str(quarter)+str(year))
+                data = build(data_file, path + 'input_PNADC_trimestral.txt',
+                             keep_columns=keep_columns)
+                save(data, path + 'PNADC_0' + str(quarter) + str(year))
                 del data
 
 
@@ -238,5 +245,5 @@ def save(df, name):
 
     """
     print("Saving .csv")
-    df.to_csv(name+'.csv',index=False)
-    print(name+'.csv', 'saved!')
+    df.to_csv(name + '.csv', index=False)
+    print(name + '.csv', 'saved!')

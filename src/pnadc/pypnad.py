@@ -33,9 +33,9 @@ It was then simplified and updated by Carlos Góes in October 2017.
 
 The procedure is quite simple. The load() function requires two
 parameters. You can call it by using the following steps:
-    
+
 pyPNAD.load(data_file, input_file)
-    
+
 * data_file is a the raw text file that holds the microdata for
     every PNAD and PNAD.
 * input_file is a SAS variable dictionary, which is a companion file to
@@ -46,14 +46,9 @@ pyPNAD.load(data_file, input_file)
 import io
 import pandas as pd
 import os
-import pandas as pd
-import urllib.request
-import zipfile
-import re
 
 
-class pyPNAD:  
-
+class pyPNAD:
     def get_var(line):
         "Parse through dictionary line, return column names and widths"
         # Read
@@ -119,6 +114,7 @@ class pyPNAD:
                                                       errors='coerce', axis=1)
         print('Done!')
         return data
+
     def __init__(self):
         self.release = 'July 2020'
         self.version = '3.0'

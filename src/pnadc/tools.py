@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .pypnad import *
+from .pypnad import pd
 
 __all__ = ['identify', 'deflators']
 
@@ -74,10 +74,8 @@ def deflators(df, defl_file):
     """
 
     f = pd.read_excel(defl_file)
-    f = f.loc[(f.trim == '01-02-03') |
-              (f.trim == '04-05-06') |
-              (f.trim == '07-08-09') |
-              (f.trim == '10-11-12'),
+    f = f.loc[(f.trim == '01-02-03') | (f.trim == '04-05-06')
+              | (f.trim == '07-08-09') | (f.trim == '10-11-12'),
               :].rename(columns={'trim': 'Trimestre',
                                  'Habitual': 'def_Habitual',
                                  'Efetivo': 'def_Efetivo'})
