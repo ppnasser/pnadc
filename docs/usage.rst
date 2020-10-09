@@ -25,7 +25,7 @@ Download the desired survey database and return a pandas DataFrame.
 
 .. _header-n528:
 
-*parms*:
+*Parameters*:
 ~~~~~~~~
 
 [mandatory]
@@ -75,7 +75,7 @@ Download the desired survey database year range and save them as csv.
 
 .. _header-n555:
 
-*parms*:
+*Parameters*:
 ~~~~~~~~
 
 [mandatory]
@@ -124,7 +124,7 @@ Download the desired survey database and return a pandas DataFrame.
 
 .. _header-n580:
 
-*parms*:
+*Parameters*:
 ~~~~~~~~
 
 [mandatory]
@@ -178,7 +178,7 @@ Return the given PNADC_0XXXXX.txt file into a pandas dataframe.
 
 .. _header-n607:
 
-*parms*:
+*Parameters*:
 ~~~~~~~~
 
 [mandatory]
@@ -211,7 +211,7 @@ Description:
 
 .. _header-n623:
 
-*parms*:
+*Parameters*:
 ~~~~~~~~
 
 [mandatory]
@@ -235,7 +235,7 @@ Unpack the given zipped file in its given directory.
 
 .. _header-n633:
 
-*parms*:
+*Parameters*:
 ~~~~~~~~
 
 [mandatory]
@@ -274,7 +274,7 @@ Example:
 
 .. _header-n649:
 
-*parms*:
+*Parameters*:
 ~~~~~~~~
 
 [mandatory]
@@ -305,7 +305,7 @@ returnning them with the DataFrame.
 
 .. _header-n660:
 
-*parms*:
+*Parameters*:
 ~~~~~~~~
 
 [mandatory]
@@ -339,7 +339,7 @@ Description:
 
 .. _header-n678:
 
-*parms*:
+*Parameters*:
 ~~~~~~~~
 
 [mandatory]
