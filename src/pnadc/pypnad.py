@@ -84,7 +84,7 @@ class pyPNAD:
     def col_widths(vars_file):
         """Parse through all variables in PNAD"""
 
-        vars_fp = io.open(vars_file)
+        vars_fp = io.open(vars_file, encoding='latin-1')
         variables = pyPNAD.get_vars(vars_fp)
 
         columns = [var['name'] for var in variables]

@@ -94,6 +94,6 @@ def deflators(df, defl_file):
     f['uf_tri_ano'] = f["UF"].apply(str) + f["Trimestre"].apply(str) + f["Ano"].apply(str)
     f = f[['uf_tri_ano', 'def_Habitual', 'def_Efetivo']]
 
-    df['uf_tri_ano'] = df["UF"].apply(str) + df["Trimestre"].apply(str) + df["Ano"].apply(str)
+    df['uf_tri_ano'] = df["UF"].apply(lambda x: str(int(x))) + df["Trimestre"].apply(lambda x: str(int(x))) + df["Ano"].apply(lambda x: str(int(x)))
 
     return pd.merge(df, f, how='left', on='uf_tri_ano')
