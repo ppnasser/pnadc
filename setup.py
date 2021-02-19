@@ -25,7 +25,7 @@ def read(*names, **kwargs):
 
 setup(
     name='pnadc',
-    version='0.0.4',
+    version='0.0.5',
     license='LGPL-3.0-or-later',
     description='A python package to deal with IBGE-PNADc database.',
     long_description='%s\n%s' % (
@@ -66,7 +66,7 @@ setup(
     ],
     python_requires='>=3.6.1',
     install_requires=[
-        'pandas>=1.0', 'xlrd>=1.2',
+        'pandas>=1.0', 'xlrd>=1.2', 'dask>=1.1.0'
     ],
     extras_require={
         # eg:

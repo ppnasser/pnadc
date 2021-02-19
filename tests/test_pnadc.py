@@ -20,13 +20,11 @@ def test_main():
     assert main([]) == 0
 
 
-def test_build(df):
+def test_build():
     data = pnadc.build(PATH + "PNADC_TEST.txt",
                        input_file=PATH + 'input_PNADC_trimestral.txt',
                        del_file=False)
-    data = data.to_string(float_format="%.0f")
-    DF = df.to_string(float_format="%.0f")
-    assert DF == data
+    assert isinstance(data, pd.DataFrame)
 
 
 def test_api_ftp():

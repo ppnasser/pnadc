@@ -34,7 +34,7 @@ def unzip(file_name, exdirpath='', keep_zipfile=True):
     print("Unzip complete")
     if not keep_zipfile:
         os.remove(file_name)
-    return file_name[:-3] + "txt"
+    return zipfile.ZipFile(file_name).namelist()[0]  # returns first file name
 
 
 class extract:
