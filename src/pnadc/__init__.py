@@ -8,4 +8,4 @@ from .pnadc import unzip
 from .tools import deflators
 from .tools import identify
 
-__version__ = '0.0.5'
+__version__ = '0.0.6'

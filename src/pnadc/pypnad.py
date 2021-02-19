@@ -100,10 +100,16 @@ class pyPNAD:
 
     def _build(data_file, widths, names,
                keep_columns=[], del_file=True):
-        data = dd.read_fwf(data_file, widths=widths, header=None, names=names,
-                           usecols=keep_columns).compute()
+        to_concat = []
+        for chunk in pd.read_fwf(data_file, widths=widths, header=None,
+                                 names=names, chunksize=2e4):
+            if keep_columns and isinstance(keep_columns, list):
+                to_concat.append(chunk[keep_columns])
+            else:
+                to_concat.append(chunk)
         if del_file:
             os.remove(data_file)
+        data = pd.concat(to_concat)
         data[data.columns] = data[data.columns].apply(pd.to_numeric,
                                                       errors='coerce', axis=1)
         print('Done!')
