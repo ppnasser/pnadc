@@ -148,7 +148,7 @@ def query(q, input_file='input_PNADC_trimestral.txt'):
     return next((item for item in var if item["column"] == q), None)
 
 
-def get(quarter, year, path='', get_docs=True, keep_columns=[], select_files=['Dicionario_e_input.zip'], save_only=False, del_file=True, **kwargs):
+def get(quarter, year, path='', get_docs=True, keep_columns=[], select_files=[], save_only=False, del_file=True, **kwargs):
     """Download the desired survey database year range and save them as csv.
 
     Parameters
@@ -189,7 +189,7 @@ def get(quarter, year, path='', get_docs=True, keep_columns=[], select_files=['D
         save(data, path + 'PNADC_0' + str(quarter) + str(year))
 
 
-def get_all(range_years, path='', get_docs=True, keep_columns=[], select_files=['Dicionario_e_input.zip'], **kwargs):
+def get_all(range_years, path='', get_docs=True, keep_columns=[], select_files=[], **kwargs):
     """Download the desired survey database year range and save them as csv.
 
     Parameters
