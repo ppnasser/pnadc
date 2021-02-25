@@ -44,9 +44,13 @@ pyPNAD.load(data_file, input_file)
 """
 
 import io
-import dask.dataframe as dd
+import multiprocessing as mp
 import os
+from math import ceil
+from multiprocessing.pool import ThreadPool
+
 import pandas as pd
+from tqdm import tqdm
 
 
 class pyPNAD:
@@ -100,22 +104,40 @@ class pyPNAD:
 
     def _build(data_file, widths, names,
                keep_columns=[], del_file=True):
-        to_concat = []
-        for chunk in pd.read_fwf(data_file, widths=widths, header=None,
-                                 names=names, chunksize=2e4):
+
+        ctx = mp.get_context('spawn')
+        pool = ThreadPool(ctx.Semaphore(mp.cpu_count()).get_value())
+
+        def df_chunking(chunk, keep_columns=keep_columns):
+            """Splits df into chunks, drops data of original df inplace"""
+            pbar.update(1)
             if keep_columns and isinstance(keep_columns, list):
-                to_concat.append(chunk[keep_columns])
+                return chunk[keep_columns]
             else:
-                to_concat.append(chunk)
-        if del_file:
-            os.remove(data_file)
-        data = pd.concat(to_concat)
+                return chunk
+
+        chunksize = 2e4
+        chunks = pd.read_fwf(data_file, widths=widths,
+                             header=None, names=names,
+                             chunksize=chunksize)
+
+        print('Multiprocessing chunks')
+        pbar = tqdm(total=ceil(sum(1 for row in open(data_file, 'r')) / chunksize))
+
+        to_concat = pool.imap_unordered(df_chunking, chunks)
+
+        data = pd.concat(list(to_concat))
         data[data.columns] = data[data.columns].apply(pd.to_numeric,
                                                       errors='coerce', axis=1)
+        pool.close()
+        pool.join()
+        if del_file:
+            os.remove(data_file)
+        pbar.close()
         print('Done!')
         return data
 
     def __init__(self):
-        self.release = 'July 2020'
-        self.version = '3.0'
+        self.release = 'Feb 2021'
+        self.version = '3.1'
         self.author = 'Lincoln de Souza & Carlos Góes & Patrick Nasser'
